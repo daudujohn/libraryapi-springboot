@@ -1,11 +1,10 @@
 package com.daudu.libraryapi.controllers;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +41,9 @@ public class AuthorController {
     }
 
     @GetMapping(path = "/authors")
-    public List<AuthorDto> listAuthors() {
-        List<AuthorEntity> authors = authorService.findAll();
-        return authors.stream().map(authorMapper::mapTo).collect(Collectors.toList());
+    public Page<AuthorDto> listAuthors(Pageable pageable) {
+        Page<AuthorEntity> authors = authorService.findAll(pageable);
+        return authors.map(authorMapper::mapTo);
     }
 
     @GetMapping(path = "/authors/{id}")
@@ -70,7 +69,8 @@ public class AuthorController {
     }
 
     @PatchMapping(path = "/authors/{id}")
-    public ResponseEntity<AuthorDto> partialUpdateAuthor(@PathVariable("id") Long id, @RequestBody AuthorDto authorDto) {
+    public ResponseEntity<AuthorDto> partialUpdateAuthor(@PathVariable("id") Long id,
+            @RequestBody AuthorDto authorDto) {
         if (!authorService.isExists(id)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

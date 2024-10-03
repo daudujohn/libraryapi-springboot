@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.daudu.libraryapi.domain.entities.AuthorEntity;
@@ -31,6 +33,11 @@ public class AuthorServiceImpl implements AuthorService {
                 .findAll()
                 .spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<AuthorEntity> findAll(Pageable pageable) {
+        return authorRepository.findAll(pageable);
     }
 
     @Override
