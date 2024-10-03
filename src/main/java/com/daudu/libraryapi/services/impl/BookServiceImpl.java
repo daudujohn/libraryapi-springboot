@@ -1,6 +1,7 @@
 package com.daudu.libraryapi.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -21,7 +22,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookEntity createBook(String isbn, BookEntity bookEntity) {
+    public BookEntity createUpdateBook(String isbn, BookEntity bookEntity) {
         bookEntity.setIsbn(isbn);
         return bookRepository.save(bookEntity);
     }
@@ -32,6 +33,27 @@ public class BookServiceImpl implements BookService {
                 .findAll()
                 .spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<BookEntity> findOne(String isbn) {
+        return bookRepository.findById(isbn);
+    }
+
+    @Override
+    public boolean isExists(String isbn) {
+        return bookRepository.existsById(isbn);
+    }
+
+    @Override
+    public BookEntity partialUpdate(String isbn, BookEntity bookEntity) {
+        bookEntity.setIsbn(isbn);
+
+        return bookRepository.findById(isbn).map(existingBook -> {
+            Optional.ofNullable(bookEntity.getTitle()).ifPresent(existingBook::setTitle);
+            return bookRepository.save(existingBook);
+        }).orElseThrow(() -> new RuntimeException("Book does not exist"));
+
     }
 
 }
