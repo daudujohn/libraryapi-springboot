@@ -2,7 +2,6 @@ package com.daudu.libraryapi.services.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -54,6 +53,11 @@ public class BookServiceImpl implements BookService {
             return bookRepository.save(existingBook);
         }).orElseThrow(() -> new RuntimeException("Book does not exist"));
 
+    }
+
+    @Override
+    public void delete(String isbn) {
+        bookRepository.deleteById(isbn);
     }
 
 }
