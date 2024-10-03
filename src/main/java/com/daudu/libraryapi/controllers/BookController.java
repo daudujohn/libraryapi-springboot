@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,6 +69,12 @@ public class BookController {
         BookEntity bookEntity = bookMapper.mapFrom(bookDto);
         BookEntity updatedBookEntity = bookService.partialUpdate(isbn, bookEntity);
         return new ResponseEntity<>(bookMapper.mapTo(updatedBookEntity), HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/books/{isbn}")
+    public ResponseEntity deleteBook(@PathVariable("isbn") String isbn) {
+        bookService.delete(isbn);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
