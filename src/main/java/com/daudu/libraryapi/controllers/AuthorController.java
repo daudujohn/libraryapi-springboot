@@ -21,10 +21,11 @@ public class AuthorController {
         this.authorMapper = authorMapper;
     }
 
-    // @PostMapping("/authors")
-    // public AuthorDto createAuthor(@RequestBody AuthorDto author){
-    //     AuthorEntity authorEntity = authorMapper.mapFrom(author);
-    //     AuthorEntity savedAuthorEntity = authorService.createAuthor(authorEntity);
-    //     return authorMapper.mapTo(savedAuthorEntity);
-    // }
+    @PostMapping(path = "/authors")
+    public AuthorDto createAuthor(@RequestBody AuthorDto author){
+        AuthorEntity authorEntity = authorMapper.mapFrom(author);
+        AuthorEntity savedAuthorEntity = authorService.createAuthor(authorEntity);
+        
+        return authorMapper.mapTo(savedAuthorEntity);
+    }
 }
