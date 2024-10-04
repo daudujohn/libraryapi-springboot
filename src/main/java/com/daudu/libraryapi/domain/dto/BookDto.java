@@ -1,5 +1,9 @@
 package com.daudu.libraryapi.domain.dto;
 
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +20,12 @@ public class BookDto {
     private String title;
 
     private AuthorDto author;
+
+    private Set<BorrowedBookDto> borrowedBooks;
+
+    private Integer stock;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String coverImage;
 
 }
