@@ -8,6 +8,6 @@ import com.daudu.libraryapi.domain.entities.AuthorEntity;
 
 @Repository
 public interface AuthorRepository extends CrudRepository<AuthorEntity, Long>,
-                PagingAndSortingRepository<AuthorEntity, String> {
+        PagingAndSortingRepository<AuthorEntity, Long> {
 
 }
