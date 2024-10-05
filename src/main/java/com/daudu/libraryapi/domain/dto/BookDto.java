@@ -21,7 +21,7 @@ public class BookDto {
 
     private AuthorDto author;
 
-    private Set<BorrowedBookDto> borrowedBooks;
+    private Set<RentalDto> rentals;
 
     private Integer stock;
 
