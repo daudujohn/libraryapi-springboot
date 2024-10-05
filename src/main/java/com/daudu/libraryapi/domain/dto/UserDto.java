@@ -22,15 +22,17 @@ public class UserDto {
 
     private String lastname;
 
-    private Set<BorrowedBookDto> borrowedBooks;
+    private String email;
+
+    private Set<RentalDto> borrowedBooks;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String password;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)  
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Optional<String> googleId;
-    
-    @JsonInclude(JsonInclude.Include.NON_NULL)  
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String displayPicture;
 
 }
