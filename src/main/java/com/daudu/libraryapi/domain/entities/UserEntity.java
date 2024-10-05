@@ -27,8 +27,11 @@ public class UserEntity {
 
     private String lastname;
 
-    @OneToMany(mappedBy = "users")
-    private Set<BorrowedBookEntity> borrowedBooks;
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    @OneToMany(mappedBy = "user")
+    private Set<RentalEntity> borrowedBooks;
 
     @Column(nullable = true)
     private String password;
