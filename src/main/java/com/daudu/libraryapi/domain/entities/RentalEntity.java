@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class RentalEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rental_id_sequence")
     private Long id;
 
     @ManyToOne
