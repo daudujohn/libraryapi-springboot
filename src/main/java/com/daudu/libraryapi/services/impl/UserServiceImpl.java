@@ -7,24 +7,33 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.daudu.libraryapi.domain.entities.UserEntity;
+import com.daudu.libraryapi.domain.entities.UserPrincipal;
 import com.daudu.libraryapi.repositories.UserRepository;
 import com.daudu.libraryapi.services.UserService;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private BCryptPasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public UserEntity save(UserEntity bookEntity) {
-        return userRepository.save(bookEntity);
+    public UserEntity save(UserEntity userEntity) {
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        return userRepository.save(userEntity);
     }
 
     @Override
@@ -43,6 +52,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserEntity> findOne(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public Optional<UserEntity> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<UserEntity> userEntity = userRepository.findByEmail(username);
+
+        if (userEntity == null) {
+            throw new UsernameNotFoundException("user not found");
+        }
+
+        return new UserPrincipal(userEntity.get());
     }
 
     @Override

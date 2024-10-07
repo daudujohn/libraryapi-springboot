@@ -18,6 +18,8 @@ public interface UserService {
 
     Optional<UserEntity> findOne(Long id);
 
+    Optional<UserEntity> findByEmail(String email);
+
     boolean isExists(Long id);
 
     UserEntity partialUpdate(Long id, UserEntity userEntity);
